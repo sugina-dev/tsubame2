@@ -1,0 +1,23 @@
+{
+  "name": "tsubame2",
+  "version": "1.0.0",
+  "description": "New server for the new Sugina Development Group website that performs authentication",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sugina-dev/tsubame2.git"
+  },
+  "author": "sugina-dev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sugina-dev/tsubame2/issues"
+  },
+  "homepage": "https://github.com/sugina-dev/tsubame2#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.0"
+  }
+}
