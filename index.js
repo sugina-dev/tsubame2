@@ -3,14 +3,13 @@
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
 const fs = require('fs');
 
-function notify(str) {
+function notify(title, str) {
 	return `<!DOCTYPE html>
 <html lang="en-HK" xml:lang="en-HK" dir="ltr">
 <head>
-<title>Success</title>
+<title>` + title + `</title>
 <meta charset="UTF-8"/>
 <style> html { align-items: center; background-color: #eee; display: flex; height: 100%; justify-content: center; }
 body { background-color: #ddd; border: 1px solid black; border-radius: 0.75rem; font-family: sans-serif, sans-serif; padding: 0.5em 7em 0.5em 3em; }
@@ -39,16 +38,20 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
 	if (req.session.loggedin) {
 		res.setHeader('Content-Type', 'text/html');
-		res.send(notify('<p>Log in success!</p><p><a href="logout">Log out</a>.</p>'));
+		res.send(notify('Success', '<p>Log in success!</p><p><a href="logout">Log out</a>.</p>'));
 	} else {
 		res.status(403);
 		res.setHeader('Content-Type', 'text/html');
-		res.send(notify('<p>Log in failed!</p><p>Go to the <a href="login">log in page</a>.</p>'));
+		res.send(notify('Failed', '<p>Log in failed!</p><p>Go to the <a href="login">log in page</a>.</p>'));
 	}
 });
 
 app.get('/login', (req, res) => {
-	res.sendFile(path.join(__dirname + '/login.html'));
+	res.setHeader('Content-Type', 'text/html');
+	res.send(notify('Login Form', `<form action="login" method="POST">
+<p>Token: <input type="password" name="token" required /></p>
+<p><input type="submit" value="Login"></p>
+</form>`));
 });
 
 app.post('/login', (req, res) => {
@@ -67,7 +70,7 @@ app.get('/logout', (req, res) => {
 			console.log(err);
 			res.status(500);
 			res.setHeader('Content-Type', 'text/html');
-			res.send(notify('<p>An error occurred!</p>'));
+			res.send(notify('Error', '<p>An error occurred!</p>'));
 		} else {
 			res.redirect('.');
 		}
