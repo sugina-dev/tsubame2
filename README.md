@@ -4,6 +4,10 @@ New server for the new Sugina Development Group website that performs authentica
 
 The server listens on `localhost:3000`.
 
-* `/`
-* `/login`: Log in
-* `/logout`: Log out
+* GET `/`
+    - Returns 200 if the user has logged in
+    - Returns 403 if the user is not logged in, and show the log in form
+* POST `/login`: Log in, `token`
+* GET `/logout`: Log out
+
+All 404 pages are redirected to `/`.

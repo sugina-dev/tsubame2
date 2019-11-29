@@ -21,10 +21,10 @@ a:hover { color: deeppink; }
 </html>`;
 }
 
-const content = fs.readFileSync('config.json');
-const jsonContent = JSON.parse(content);
-const defaultSecret = jsonContent.secret;
-const defaultToken = jsonContent.token;
+const config = fs.readFileSync('config.json');
+const jsonConfig = JSON.parse(config);
+const defaultSecret = jsonConfig.secret;
+const defaultToken = jsonConfig.token;
 
 const app = express();
 app.use(session({
@@ -36,45 +36,46 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-	if (req.session.loggedin) {
-		res.setHeader('Content-Type', 'text/html');
-		res.send(notify('Success', '<p>Log in success!</p><p><a href="logout">Log out</a>.</p>'));
-	} else {
+	if (!req.session.authenticated) {
 		res.status(403);
 		res.setHeader('Content-Type', 'text/html');
-		res.send(notify('Failed', '<p>Log in failed!</p><p>Go to the <a href="login">log in page</a>.</p>'));
-	}
-});
-
-app.get('/login', (req, res) => {
-	res.setHeader('Content-Type', 'text/html');
-	res.send(notify('Login Form', `<form action="login" method="POST">
+		res.send(notify('Login Form', `<form action="login" method="POST">
 <p>Token: <input type="password" name="token" required /></p>
 <p><input type="submit" value="Login"></p>
 </form>`));
+	} else {
+		res.setHeader('Content-Type', 'text/html');
+		res.send(notify('Success', '<p>Log in success!</p><p><a href="logout">Log out</a>.</p>'));
+	}
 });
 
 app.post('/login', (req, res) => {
 	const token = req.body.token;
-	if (token == defaultToken) {
-		req.session.loggedin = true;
-		req.session.username = 'username';
-	}
+	if (token == defaultToken)
+		req.session.authenticated = true;
 	res.redirect('.');
-	res.end();
 });
 
 app.get('/logout', (req, res) => {
-	req.session.destroy(err => {
-		if (err) {
-			console.log(err);
-			res.status(500);
-			res.setHeader('Content-Type', 'text/html');
-			res.send(notify('Error', '<p>An error occurred!</p>'));
-		} else {
-			res.redirect('.');
-		}
-	});
-}); 
+	if (!req.session.authenticated) {
+		res.status(400);
+		res.setHeader('Content-Type', 'text/html');
+		res.send(notify('Error', '<p>You are not logged in!</p>'));
+	} else {
+		req.session.destroy(err => {
+			if (err) {
+				res.status(500);
+				res.setHeader('Content-Type', 'text/html');
+				res.send(notify('Error', '<p>An error occurred!</p>'));
+			} else {
+				res.redirect('.');
+			}
+		});
+	}
+});
+
+app.use((req, res) => {
+	res.status(404).redirect('/');
+});
 
 app.listen(3000, 'localhost');
