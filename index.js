@@ -51,8 +51,10 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res) => {
 	const token = req.body.token;
-	if (token == defaultToken)
+	if (token == defaultToken) {
 		req.session.authenticated = true;
+		res.redirect('/');
+	}
 	res.redirect('.');
 });
 
