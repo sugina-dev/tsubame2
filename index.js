@@ -11,6 +11,7 @@ function notify(title, str) {
 <head>
 <title>` + title + `</title>
 <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <style> html { align-items: center; background-color: #eee; display: flex; height: 100%; justify-content: center; }
 body { background-color: #ddd; border: 1px solid black; border-radius: 0.75rem; font-family: sans-serif, sans-serif; padding: 0.5em 7em 0.5em 3em; }
 a { color: dodgerblue; text-decoration: none; }
