@@ -2,7 +2,7 @@
 
 New server for the new Sugina Development Group website that performs authentication
 
-The server listens on `localhost:3000`.
+## API
 
 * GET `/`
     - Returns 200 if the user has logged in
@@ -17,3 +17,5 @@ All 404 pages are redirected to `/`.
 Set environment vairable `NODE_SECRET` and `NODE_TOKEN`.
 
 Run `node index.js`.
+
+The server listens on port `3000`.

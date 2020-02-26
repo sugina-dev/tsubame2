@@ -81,4 +81,4 @@ app.use((req, res) => {
 	res.status(404).redirect('/');
 });
 
-app.listen(3000, 'localhost');
+app.listen(3000);
