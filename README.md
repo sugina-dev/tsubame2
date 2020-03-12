@@ -14,8 +14,8 @@ All 404 pages are redirected to `/`.
 
 ## Usage
 
-Set environment vairable `NODE_SECRET` and `NODE_TOKEN`.
-
-Run `node index.js`.
+```sh
+$ docker run -d -p '[::1]:3000:3000' -e NODE_SECRET='xxx' -e NODE_TOKEN='xxx' --name=my-tsubame2 tsubame2
+```
 
 The server listens on port `3000`.
